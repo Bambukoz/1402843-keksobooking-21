@@ -2,12 +2,13 @@
 
 const TITLES = [`Пустой сруб`, `Кирпичный завод`, `Просторная улица`, `Крыша небоскреба`, `Подвал с бомжами`, `Кабинет министров`, `Буддийский храм`, `Социальное дно`];
 const TYPES = [`palace`, `flat`, `house`, `bungalow`];
-const TIMES = [`12:00`, `13:00`, `14:00`];
-const ROOMS = [`1`, `2`, `3`, `100`];
-const GUESTS = [`0`, `1`, `2`, `3`];
 const FEATURES = [`wifi`, `dishwasher`, `parking`, `washer`, `elevator`, `conditioner`];
-const PHOTOS = [`http://o0.github.io/assets/images/tokyo/hotel1.jpg`, `http://o0.github.io/assets/images/tokyo/hotel2.jpg`, `http://o0.github.io/assets/images/tokyo/hotel3.jpg`];
-const USERS = [`1`, `2`, `3`, `4`, `5`, `6`, `7`, `8`];
+const PHOTOS_LINK = `http://o0.github.io/assets/images/tokyo/`;
+const PHOTOS = [`hotel1.jpg`, `hotel2.jpg`, `hotel3.jpg`];
+const TIMES = [`12:00`, `13:00`, `14:00`];
+const ROOMS = [1, 2, 3, 100];
+const MIN_GUESTS = 0;
+const MAX_GUESTS = 3;
 const PIN = {
   AMOUNT: 8,
   WIDTH: 50,
@@ -31,10 +32,14 @@ const getRandomNumber = (number) => Math.floor(Math.random() * number);
 const getRandomIndex = (arr) => arr[Math.floor(Math.random() * arr.length)];
 const getRandomRange = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
 
-const getRandomArr = (arr, number) => {
+const getRandomArr = (arr, number, string) => {
   const randomArr = [];
   for (let i = 0; i < number; i++) {
-    randomArr.push(arr[getRandomNumber(arr.length)]);
+    if (string === undefined) {
+      randomArr.push(arr[getRandomNumber(arr.length)]);
+    } else {
+      randomArr.push(string + arr[getRandomNumber(arr.length)]);
+    }
   }
   return Array.from(new Set(randomArr));
 };
@@ -45,20 +50,20 @@ const getCards = (quantity) => {
     cards.push(
         {
           author: {
-            avatar: `img/avatars/user0${USERS[i]}.png`,
+            avatar: `img/avatars/user0${i + 1}.png`,
           },
           offer: {
             title: TITLES[i],
-            adress: `${getRandomRange(LOCATIONS.X_MIN, LOCATIONS.X_MAX)}, ${getRandomRange(LOCATIONS.Y_MIN, LOCATIONS.Y_MAX)}`,
+            address: `${getRandomRange(LOCATIONS.X_MIN, LOCATIONS.X_MAX)}, ${getRandomRange(LOCATIONS.Y_MIN, LOCATIONS.Y_MAX)}`,
             price: getRandomRange(PRICES.MIN, PRICES.MAX),
             type: getRandomIndex(TYPES),
             rooms: getRandomIndex(ROOMS),
-            guests: getRandomIndex(GUESTS),
+            guests: getRandomRange(MIN_GUESTS, MAX_GUESTS),
             checkin: getRandomIndex(TIMES),
             checkout: getRandomIndex(TIMES),
             features: getRandomArr(FEATURES, getRandomNumber(FEATURES.length)),
             description: ` `,
-            photos: getRandomArr(PHOTOS, getRandomNumber(PHOTOS.length))
+            photos: getRandomArr(PHOTOS, getRandomNumber(PHOTOS.length), PHOTOS_LINK)
           },
           location: {
             x: getRandomRange(LOCATIONS.X_MIN, LOCATIONS.X_MAX),
@@ -71,8 +76,8 @@ const getCards = (quantity) => {
 };
 
 const renderPin = (obj) => {
-  const pintemplate = document.querySelector(`#pin`).content.querySelector(`.map__pin`);
-  const pin = pintemplate.cloneNode(true);
+  const pinTemplate = document.querySelector(`#pin`).content.querySelector(`.map__pin`);
+  const pin = pinTemplate.cloneNode(true);
   pin.style.left = `${obj.location.x + PIN.WIDTH / 2}px`;
   pin.style.top = `${obj.location.y + PIN.HEIGHT}px`;
   pin.querySelector(`img`).src = obj.author.avatar;
