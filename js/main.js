@@ -6,44 +6,46 @@ const PHOTOS_LINK = `http://o0.github.io/assets/images/tokyo/`;
 const PHOTOS = [`hotel1.jpg`, `hotel2.jpg`, `hotel3.jpg`];
 const TIMES = [`12:00`, `13:00`, `14:00`];
 const ROOMS = [1, 2, 3, 100];
-const MIN_GUESTS = 1;
-const MAX_GUESTS = 3;
-const FEATURES_CLASS = `popup__feature--`;
-const FEATURES = {
-  wifi: FEATURES_CLASS + `wifi`,
-  dishwasher: FEATURES_CLASS + `dishwasher`,
-  parking: FEATURES_CLASS + `parking`,
-  washer: FEATURES_CLASS + `washer`,
-  elevator: FEATURES_CLASS + `elevator`,
-  conditioner: FEATURES_CLASS + `conditioner`
-};
-const TYPES = {
-  palace: `Дворец`,
-  flat: `Квартира`,
-  house: `Дом`,
-  bungalow: `Бунгало`
-};
-const PIN = {
+const FEATURES_CLASS = `popup__feature`;
+const Pin = {
   AMOUNT: 8,
   WIDTH: 50,
   HEIGHT: 70
 };
-const PRICES = {
+const Prices = {
   MIN: 1000,
   MAX: 10000
 };
-const LOCATIONS = {
+const Locations = {
   X_MIN: 0,
   X_MAX: 980,
   Y_MIN: 130,
   Y_MAX: 630,
+};
+const Guests = {
+  MIN: 1,
+  MAX: 3
+};
+const features = {
+  wifi: FEATURES_CLASS + `--wifi`,
+  dishwasher: FEATURES_CLASS + `--dishwasher`,
+  parking: FEATURES_CLASS + `--parking`,
+  washer: FEATURES_CLASS + `--washer`,
+  elevator: FEATURES_CLASS + `--elevator`,
+  conditioner: FEATURES_CLASS + `--conditioner`
+};
+const typesOfHousing = {
+  palace: `Дворец`,
+  flat: `Квартира`,
+  house: `Дом`,
+  bungalow: `Бунгало`
 };
 
 const map = document.querySelector(`.map`);
 map.classList.remove(`map--faded`);
 
 const getRandomNumber = (number) => Math.floor(Math.random() * number);
-const getRandomIndex = (arr) => arr[Math.floor(Math.random() * arr.length)];
+const getRandomElement = (arr) => arr[Math.floor(Math.random() * arr.length)];
 const getRandomRange = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
 
 const getRandomArr = (arr, number, string) => {
@@ -68,20 +70,20 @@ const getCards = (quantity) => {
           },
           offer: {
             title: TITLES[i],
-            address: `${getRandomRange(LOCATIONS.X_MIN, LOCATIONS.X_MAX)}, ${getRandomRange(LOCATIONS.Y_MIN, LOCATIONS.Y_MAX)}`,
-            price: getRandomRange(PRICES.MIN, PRICES.MAX),
-            type: getRandomIndex(Object.keys(TYPES)),
-            rooms: getRandomIndex(ROOMS),
-            guests: getRandomRange(MIN_GUESTS, MAX_GUESTS),
-            checkin: getRandomIndex(TIMES),
-            checkout: getRandomIndex(TIMES),
-            features: getRandomArr(Object.keys(FEATURES), getRandomNumber(Object.keys(FEATURES).length)),
-            description: getRandomIndex(DESCRIPTIONS),
+            address: `${getRandomRange(Locations.X_MIN, Locations.X_MAX)}, ${getRandomRange(Locations.Y_MIN, Locations.Y_MAX)}`,
+            price: getRandomRange(Prices.MIN, Prices.MAX),
+            type: getRandomElement(Object.keys(typesOfHousing)),
+            rooms: getRandomElement(ROOMS),
+            guests: getRandomRange(Guests.MIN, Guests.MAX),
+            checkin: getRandomElement(TIMES),
+            checkout: getRandomElement(TIMES),
+            features: getRandomArr(Object.keys(features), getRandomNumber(Object.keys(features).length)),
+            description: getRandomElement(DESCRIPTIONS),
             photos: getRandomArr(PHOTOS, getRandomNumber(PHOTOS.length), PHOTOS_LINK)
           },
           location: {
-            x: getRandomRange(LOCATIONS.X_MIN, LOCATIONS.X_MAX),
-            y: getRandomRange(LOCATIONS.Y_MIN, LOCATIONS.Y_MAX)
+            x: getRandomRange(Locations.X_MIN, Locations.X_MAX),
+            y: getRandomRange(Locations.Y_MIN, Locations.Y_MAX)
           }
         }
     );
@@ -90,10 +92,9 @@ const getCards = (quantity) => {
 };
 
 const renderPin = (obj) => {
-  const pinTemplate = document.querySelector(`#pin`).content.querySelector(`.map__pin`);
-  const pin = pinTemplate.cloneNode(true);
-  pin.style.left = `${obj.location.x + PIN.WIDTH / 2}px`;
-  pin.style.top = `${obj.location.y + PIN.HEIGHT}px`;
+  const pin = document.querySelector(`#pin`).content.querySelector(`.map__pin`).cloneNode(true);
+  pin.style.left = `${obj.location.x + Pin.WIDTH / 2}px`;
+  pin.style.top = `${obj.location.y + Pin.HEIGHT}px`;
   pin.querySelector(`img`).src = obj.author.avatar;
   pin.querySelector(`img`).alt = obj.offer.title;
   return pin;
@@ -101,65 +102,53 @@ const renderPin = (obj) => {
 
 const createPins = (pins) => {
   const fragment = document.createDocumentFragment();
-  const mapPins = map.querySelector(`.map__pins`);
   for (let pin of pins) {
     fragment.appendChild(renderPin(pin));
   }
-  mapPins.appendChild(fragment);
+  map.querySelector(`.map__pins`).appendChild(fragment);
 };
 
-const declOfNum = (number, words) => words[(number % 100 > 4 && number % 100 < 20) ? 2 : [2, 0, 1, 1, 1, 2][(number % 10 < 5) ? number % 10 : 5]];
+const getWordsEndings = (number, words) => words[(number % 100 > 4 && number % 100 < 20) ? 2 : [2, 0, 1, 1, 1, 2][(number % 10 < 5) ? number % 10 : 5]];
 
-const renderCard = (obj) => {
-  const cardTemplate = document.querySelector(`#card`).content.querySelector(`.popup`);
-  const card = cardTemplate.cloneNode(true);
-  const features = card.querySelectorAll(`.popup__feature`);
+const renderCard = (dataObject) => {
+  const card = document.querySelector(`#card`).content.querySelector(`.popup`).cloneNode(true);
+  const featuresList = card.querySelector(`.popup__features`);
   const photo = card.querySelector(`.popup__photo`);
 
-  card.querySelector(`.popup__avatar`).src = obj.author.avatar;
-  card.querySelector(`.popup__title`).textContent = obj.offer.title;
-  card.querySelector(`.popup__text--address`).textContent = obj.offer.address;
-  card.querySelector(`.popup__text--price`).textContent = `${obj.offer.price} ₽/ночь`;
-  card.querySelector(`.popup__type`).textContent = TYPES[obj.offer.type];
-  card.querySelector(`.popup__text--capacity`).textContent = `${obj.offer.rooms} ${declOfNum(obj.offer.rooms, [`комната`, `комнаты`, `комнат`])} для ${obj.offer.guests} ${declOfNum(obj.offer.guests, [`гостя`, `гостей`])}`;
-  card.querySelector(`.popup__text--time`).textContent = `Заезд после ${obj.offer.checkin}, выезд до ${obj.offer.checkout}`;
+  card.querySelector(`.popup__avatar`).src = dataObject.author.avatar;
+  card.querySelector(`.popup__title`).textContent = dataObject.offer.title;
+  card.querySelector(`.popup__text--address`).textContent = dataObject.offer.address;
+  card.querySelector(`.popup__text--price`).textContent = `${dataObject.offer.price} ₽/ночь`;
+  card.querySelector(`.popup__type`).textContent = typesOfHousing[dataObject.offer.type];
+  card.querySelector(`.popup__text--capacity`).textContent = `${dataObject.offer.rooms} ${getWordsEndings(dataObject.offer.rooms, [`комната`, `комнаты`, `комнат`])} для ${dataObject.offer.guests} ${getWordsEndings(dataObject.offer.guests, [`гостя`, `гостей`])}`;
+  card.querySelector(`.popup__text--time`).textContent = `Заезд после ${dataObject.offer.checkin}, выезд до ${dataObject.offer.checkout}`;
 
-  // Тут я конечно считерил, но другое решение пока что не придумал
-  for (let i = 0; i < features.length; i++) {
-    for (let j = 0; j < obj.offer.features.length; j++) {
-      if (features[i].classList.contains(FEATURES[obj.offer.features[j]])) {
-        features[i].classList.remove(`hidden`);
-      }
-    }
+  for (let i = 0; i < dataObject.offer.features.length; i++) {
+    featuresList.appendChild(document.createElement(`li`)).className = `${FEATURES_CLASS} ${features[dataObject.offer.features[i]]}`;
   }
-  // Возможно это стоит вынести в отдельные функции?
-  photo.src = obj.offer.photos[0];
-  if (obj.offer.photos.length > 1) {
+
+  photo.src = dataObject.offer.photos[0];
+  if (dataObject.offer.photos.length > 1) {
     const fragment = document.createDocumentFragment();
-    for (let i = 1; i < obj.offer.photos.length; i++) {
-      fragment.appendChild(photo.cloneNode(true)).src = obj.offer.photos[i];
+    for (let i = 1; i < dataObject.offer.photos.length; i++) {
+      fragment.appendChild(photo.cloneNode(true)).src = dataObject.offer.photos[i];
     }
     photo.parentElement.appendChild(fragment);
   } else {
     card.querySelector(`.popup__photos`).remove();
   }
 
-  card.querySelector(`.popup__description`).textContent = obj.offer.description;
+  card.querySelector(`.popup__description`).textContent = dataObject.offer.description;
   return card;
 };
 
 const createCards = (card) => {
-  const fragment = document.createDocumentFragment();
-  // for (let card of cards) {
-  fragment.appendChild(renderCard(card));
-  // }
-  map.appendChild(fragment);
+  map.appendChild(document.createDocumentFragment().appendChild(renderCard(card)));
 };
 
-const createAd = (arr) => {
-  const dataArr = arr;
-  createPins(dataArr);
-  createCards(dataArr[0]);
+const createBlocks = (arr) => {
+  createPins(arr);
+  createCards(arr[0]);
 };
 
-createAd(getCards(PIN.AMOUNT));
+createBlocks(getCards(Pin.AMOUNT));
