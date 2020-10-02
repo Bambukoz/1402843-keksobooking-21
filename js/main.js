@@ -38,17 +38,17 @@ const Pin = {
   WIDTH: 50,
   HEIGHT: 70
 };
-const Prices = {
+const Price = {
   MIN: 1000,
   MAX: 10000
 };
-const Locations = {
+const Coordinate = {
   X_MIN: 0,
   X_MAX: 980,
   Y_MIN: 130,
   Y_MAX: 630,
 };
-const Guests = {
+const Guest = {
   MIN: 1,
   MAX: 3
 };
@@ -90,6 +90,8 @@ const getRandomArr = (arr, number, string) => {
 const getCards = (quantity) => {
   const cards = [];
   for (let i = 0; i < quantity; i++) {
+    const locationX = getRandomRange(Coordinate.X_MIN, Coordinate.X_MAX);
+    const locationY = getRandomRange(Coordinate.Y_MIN, Coordinate.Y_MAX);
     cards.push(
         {
           author: {
@@ -97,11 +99,11 @@ const getCards = (quantity) => {
           },
           offer: {
             title: TITLES[i],
-            address: `${getRandomRange(Locations.X_MIN, Locations.X_MAX)}, ${getRandomRange(Locations.Y_MIN, Locations.Y_MAX)}`,
-            price: getRandomRange(Prices.MIN, Prices.MAX),
+            address: `${locationX}, ${locationY}`,
+            price: getRandomRange(Price.MIN, Price.MAX),
             type: getRandomElement(Object.keys(typesOfHousing)),
             rooms: getRandomElement(ROOMS),
-            guests: getRandomRange(Guests.MIN, Guests.MAX),
+            guests: getRandomRange(Guest.MIN, Guest.MAX),
             checkin: getRandomElement(TIMES),
             checkout: getRandomElement(TIMES),
             features: getRandomArr(Object.keys(features), getRandomNumber(Object.keys(features).length)),
@@ -109,8 +111,8 @@ const getCards = (quantity) => {
             photos: getRandomArr(PHOTOS, getRandomNumber(PHOTOS.length), PHOTOS_LINK)
           },
           location: {
-            x: getRandomRange(Locations.X_MIN, Locations.X_MAX),
-            y: getRandomRange(Locations.Y_MIN, Locations.Y_MAX)
+            x: locationX,
+            y: locationY
           }
         }
     );
