@@ -16,6 +16,7 @@ const DESCRIPTIONS = [
   `Я мимо проходил`,
   `Го ко мне, я создал`
 ];
+const PHOTOS_LINK = `http://o0.github.io/assets/images/tokyo/`;
 const PHOTOS = [
   `hotel1.jpg`,
   `hotel2.jpg`,
@@ -51,6 +52,7 @@ const Guests = {
   MIN: 1,
   MAX: 3
 };
+const FEATURE_CLASS = `popup__feature`;
 const features = {
   wifi: FEATURE_CLASS + `--wifi`,
   dishwasher: FEATURE_CLASS + `--dishwasher`,
@@ -65,8 +67,6 @@ const typesOfHousing = {
   house: `Дом`,
   bungalow: `Бунгало`
 };
-const PHOTOS_LINK = `http://o0.github.io/assets/images/tokyo/`;
-const FEATURE_CLASS = `popup__feature`;
 
 const map = document.querySelector(`.map`);
 map.classList.remove(`map--faded`);
