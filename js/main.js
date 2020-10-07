@@ -67,12 +67,17 @@ const typesOfHousing = {
   house: `Дом`,
   bungalow: `Бунгало`
 };
+const KeyButtons = {
+  MOUSE_LEFT: 0,
+  ENTER: `Enter`,
+  ESC: `Esc`
+};
 
 const map = document.querySelector(`.map`);
 const pinList = map.querySelector(`.map__pins`);
 const pinTemplate = document.querySelector(`#pin`).content.querySelector(`.map__pin`);
-// const photoTemplate = document.querySelector(`#photo`).content;
-// const cardTemplate = document.querySelector(`#card`).content.querySelector(`.popup`);
+const photoTemplate = document.querySelector(`#photo`).content;
+const cardTemplate = document.querySelector(`#card`).content.querySelector(`.popup`);
 
 const getRandomNumber = (number) => Math.floor(Math.random() * number);
 const getRandomElement = (arr) => arr[Math.floor(Math.random() * arr.length)];
@@ -135,63 +140,65 @@ const getRenderPin = (pin) => {
 const createPins = (pins) => {
   const fragment = document.createDocumentFragment();
   for (let pin of pins) {
-    fragment.append(getRenderPin(pin));
+    const renderPin = getRenderPin(pin);
+    fragment.append(renderPin);
+    renderPin.addEventListener(`click`, () => {
+      createCard(pin);
+    });
   }
   pinList.append(fragment);
 };
 
-// const getWordsEndings = (number, words) => words[(number % 100 > 4 && number % 100 < 20) ? 2 : [2, 0, 1, 1, 1, 2][(number % 10 < 5) ? number % 10 : 5]];
+const getWordsEndings = (number, words) => words[(number % 100 > 4 && number % 100 < 20) ? 2 : [2, 0, 1, 1, 1, 2][(number % 10 < 5) ? number % 10 : 5]];
 
-// const getRenderFeature = (featureData) => {
-//   const newFeature = document.createElement(`li`);
-//   newFeature.className = `${FEATURE_CLASS} ${features[featureData]}`;
-//   return newFeature;
-// };
+const getRenderFeature = (featureData) => {
+  const newFeature = document.createElement(`li`);
+  newFeature.className = `${FEATURE_CLASS} ${features[featureData]}`;
+  return newFeature;
+};
 
-// const getRenderPhoto = (photoData) => {
-//   const photoElement = photoTemplate.cloneNode(true);
-//   photoElement.querySelector(`img`).src = photoData;
-//   return photoElement;
-// };
+const getRenderPhoto = (photoData) => {
+  const photoElement = photoTemplate.cloneNode(true);
+  photoElement.querySelector(`img`).src = photoData;
+  return photoElement;
+};
 
-// const getRenderCard = (cardData) => {
-//   const cardElement = cardTemplate.cloneNode(true);
-//   const featuresList = cardElement.querySelector(`.popup__features`);
-//   const photosList = cardElement.querySelector(`.popup__photos`);
+const getRenderCard = (cardData) => {
+  const cardElement = cardTemplate.cloneNode(true);
+  const featuresList = cardElement.querySelector(`.popup__features`);
+  const photosList = cardElement.querySelector(`.popup__photos`);
 
-//   cardElement.querySelector(`.popup__avatar`).src = cardData.author.avatar;
-//   cardElement.querySelector(`.popup__title`).textContent = cardData.offer.title;
-//   cardElement.querySelector(`.popup__text--address`).textContent = cardData.offer.address;
-//   cardElement.querySelector(`.popup__text--price`).textContent = `${cardData.offer.price} ₽/ночь`;
-//   cardElement.querySelector(`.popup__type`).textContent = typesOfHousing[cardData.offer.type];
-//   cardElement.querySelector(`.popup__text--capacity`).textContent = `${cardData.offer.rooms} ${getWordsEndings(cardData.offer.rooms, [`комната`, `комнаты`, `комнат`])} для ${cardData.offer.guests} ${getWordsEndings(cardData.offer.guests, [`гостя`, `гостей`])}`;
-//   cardElement.querySelector(`.popup__text--time`).textContent = `Заезд после ${cardData.offer.checkin}, выезд до ${cardData.offer.checkout}`;
+  cardElement.querySelector(`.popup__avatar`).src = cardData.author.avatar;
+  cardElement.querySelector(`.popup__title`).textContent = cardData.offer.title;
+  cardElement.querySelector(`.popup__text--address`).textContent = cardData.offer.address;
+  cardElement.querySelector(`.popup__text--price`).textContent = `${cardData.offer.price} ₽/ночь`;
+  cardElement.querySelector(`.popup__type`).textContent = typesOfHousing[cardData.offer.type];
+  cardElement.querySelector(`.popup__text--capacity`).textContent = `${cardData.offer.rooms} ${getWordsEndings(cardData.offer.rooms, [`комната`, `комнаты`, `комнат`])} для ${cardData.offer.guests} ${getWordsEndings(cardData.offer.guests, [`гостя`, `гостей`])}`;
+  cardElement.querySelector(`.popup__text--time`).textContent = `Заезд после ${cardData.offer.checkin}, выезд до ${cardData.offer.checkout}`;
 
-//   for (let i = 0; i < cardData.offer.features.length; i++) {
-//     featuresList.append(getRenderFeature(cardData.offer.features[i]));
-//   }
+  for (let i = 0; i < cardData.offer.features.length; i++) {
+    featuresList.append(getRenderFeature(cardData.offer.features[i]));
+  }
 
-//   for (let i = 0; i < cardData.offer.photos.length; i++) {
-//     photosList.append(getRenderPhoto(cardData.offer.photos[i]));
-//   }
+  for (let i = 0; i < cardData.offer.photos.length; i++) {
+    photosList.append(getRenderPhoto(cardData.offer.photos[i]));
+  }
 
-//   cardElement.querySelector(`.popup__description`).textContent = cardData.offer.description;
-//   return cardElement;
-// };
+  cardElement.querySelector(`.popup__description`).textContent = cardData.offer.description;
+  return cardElement;
+};
 
-// const createCard = (card) => {
-//   map.append(getRenderCard(card));
-// };
-
-const createBlocks = (cards) => {
-  createPins(cards);
-  // createCard(cards[0]);
+const createCard = (card) => {
+  const popup = map.querySelector(`.popup`);
+  if (map.contains(popup)) {
+    popup.remove();
+  }
+  map.append(getRenderCard(card));
 };
 
 const mainPin = map.querySelector(`.map__pin--main`);
 const form = document.querySelector(`.ad-form`);
-const formHeader = form.querySelector(`.ad-form-header`);
-const formElements = form.querySelectorAll(`.ad-form__element`);
+const formFieldset = form.querySelectorAll(`fieldset`);
 const formSubmit = form.querySelector(`.ad-form__submit`);
 const RoomsForGuests = {
   1: [`1`],
@@ -200,26 +207,29 @@ const RoomsForGuests = {
   100: [`0`]
 };
 
-(function () {
-  formHeader.disabled = true;
-  formElements.forEach((element) => {
-    element.disabled = true;
+const disabledForm = (bool) => {
+  formFieldset.forEach((element) => {
+    element.disabled = bool;
   });
+};
+
+(function () {
+  disabledForm(true);
 })();
 
 const getMainAddressX = () => parseInt(mainPin.style.left, 10) + Pin.WIDTH / 2;
 const getMainAddressY = () => parseInt(mainPin.style.top, 10) + Pin.HEIGHT;
 
-const getMainAddress = () => {
-  form.address.value = `${getMainAddressX()} ${getMainAddressY()}`;
+const setMainAddress = () => {
+  form.address.value = `${getMainAddressX()}, ${getMainAddressY()}`;
 };
 
 const activatePageOnPress = (evt) => {
-  if (evt.button === 0 || evt.key === `Enter`) {
+  if (evt.button === KeyButtons.MOUSE_LEFT || evt.key === KeyButtons.ENTER) {
     map.classList.remove(`map--faded`);
-    createBlocks(getCards(Pin.AMOUNT));
+    createPins(getCards(Pin.AMOUNT));
     activateForm();
-    getMainAddress();
+    setMainAddress();
     mainPin.removeEventListener(`mousedown`, activatePageOnPress);
     mainPin.removeEventListener(`keydown`, activatePageOnPress);
   }
@@ -227,20 +237,19 @@ const activatePageOnPress = (evt) => {
 
 const activateForm = () => {
   form.classList.remove(`ad-form--disabled`);
-  formHeader.disabled = false;
-  formElements.forEach((element) => {
-    element.disabled = false;
-  });
+  disabledForm(false);
 };
 
-const validateRoomsInput = () => {
-  const result = !RoomsForGuests[form.rooms.value].includes(form.capacity.value) ? form.capacity.setCustomValidity(`Несоответствие количества комнат количеству гостей`) : form.capacity.setCustomValidity(``);
+const onCapacityChange = () => {
+  const validationMessage = !RoomsForGuests[form.rooms.value].includes(form.capacity.value)
+    ? `Несоответствие количества комнат количеству гостей`
+    : ``;
+  form.capacity.setCustomValidity(validationMessage);
   form.capacity.reportValidity();
-  return result;
 };
 
 mainPin.addEventListener(`mousedown`, activatePageOnPress);
 mainPin.addEventListener(`keydown`, activatePageOnPress);
-form.rooms.addEventListener(`input`, validateRoomsInput);
-form.capacity.addEventListener(`input`, validateRoomsInput);
-formSubmit.addEventListener(`click`, validateRoomsInput);
+form.rooms.addEventListener(`input`, onCapacityChange);
+form.capacity.addEventListener(`input`, onCapacityChange);
+formSubmit.addEventListener(`click`, onCapacityChange);
