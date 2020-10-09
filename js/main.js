@@ -70,7 +70,7 @@ const typesOfHousing = {
 const KeyButtons = {
   MOUSE_LEFT: 0,
   ENTER: `Enter`,
-  ESC: `Esc`
+  ESCAPE: `Escape`
 };
 
 const map = document.querySelector(`.map`);
@@ -167,7 +167,8 @@ const getRenderCard = (cardData) => {
   const cardElement = cardTemplate.cloneNode(true);
   const featuresList = cardElement.querySelector(`.popup__features`);
   const photosList = cardElement.querySelector(`.popup__photos`);
-
+  document.addEventListener(`keydown`, onEscBtnClick);
+  cardElement.querySelector(`.popup__close`).addEventListener(`click`, onCloseBtnClick);
   cardElement.querySelector(`.popup__avatar`).src = cardData.author.avatar;
   cardElement.querySelector(`.popup__title`).textContent = cardData.offer.title;
   cardElement.querySelector(`.popup__text--address`).textContent = cardData.offer.address;
@@ -188,6 +189,19 @@ const getRenderCard = (cardData) => {
   return cardElement;
 };
 
+const onEscBtnClick = (evt) => {
+  if (evt.key === KeyButtons.ESCAPE) {
+    evt.preventDefault();
+    map.querySelector(`.popup`).remove();
+    document.removeEventListener(`keydown`, onEscBtnClick);
+  }
+};
+
+const onCloseBtnClick = (evt) => {
+  evt.target.parentElement.remove();
+  evt.target.removeEventListener(`click`, onCloseBtnClick);
+};
+
 const createCard = (card) => {
   const popup = map.querySelector(`.popup`);
   if (map.contains(popup)) {
@@ -199,12 +213,17 @@ const createCard = (card) => {
 const mainPin = map.querySelector(`.map__pin--main`);
 const form = document.querySelector(`.ad-form`);
 const formFieldset = form.querySelectorAll(`fieldset`);
-const formSubmit = form.querySelector(`.ad-form__submit`);
 const RoomsForGuests = {
   1: [`1`],
   2: [`1`, `2`],
   3: [`1`, `2`, `3`],
   100: [`0`]
+};
+const MinPrices = {
+  bungalow: 0,
+  flat: 1000,
+  house: 5000,
+  palace: 10000
 };
 
 const disabledForm = (bool) => {
@@ -213,9 +232,7 @@ const disabledForm = (bool) => {
   });
 };
 
-(function () {
-  disabledForm(true);
-})();
+disabledForm(true);
 
 const getMainAddressX = () => parseInt(mainPin.style.left, 10) + Pin.WIDTH / 2;
 const getMainAddressY = () => parseInt(mainPin.style.top, 10) + Pin.HEIGHT;
@@ -223,33 +240,62 @@ const getMainAddressY = () => parseInt(mainPin.style.top, 10) + Pin.HEIGHT;
 const setMainAddress = () => {
   form.address.value = `${getMainAddressX()}, ${getMainAddressY()}`;
 };
+// ###########
 
-const activatePageOnPress = (evt) => {
+const onTypeChange = () => {
+  form.price.min = `${MinPrices[form.type.value]}`;
+  form.price.placeholder = `${MinPrices[form.type.value]}`;
+};
+
+const onCapacityChange = () => {
+  const validationMessage = !RoomsForGuests[form.rooms.value].includes(form.capacity.value) ?
+    `Несоответствие количества комнат количеству гостей` :
+    ``;
+  form.capacity.setCustomValidity(validationMessage);
+  form.capacity.reportValidity();
+};
+
+const onTimeChange = (evt) => {
+  if (evt.target === form.timein) {
+    form.timeout.value = evt.target.value;
+  } else {
+    form.timein.value = evt.target.value;
+  }
+};
+// ###########
+
+const onMainPinClick = (evt) => {
   if (evt.button === KeyButtons.MOUSE_LEFT || evt.key === KeyButtons.ENTER) {
     map.classList.remove(`map--faded`);
     createPins(getCards(Pin.AMOUNT));
     activateForm();
     setMainAddress();
-    mainPin.removeEventListener(`mousedown`, activatePageOnPress);
-    mainPin.removeEventListener(`keydown`, activatePageOnPress);
+    mainPin.removeEventListener(`mousedown`, onMainPinClick);
+    mainPin.removeEventListener(`keydown`, onMainPinClick);
   }
 };
 
 const activateForm = () => {
   form.classList.remove(`ad-form--disabled`);
   disabledForm(false);
+  form.addEventListener(`change`, onFormElementChange);
 };
 
-const onCapacityChange = () => {
-  const validationMessage = !RoomsForGuests[form.rooms.value].includes(form.capacity.value)
-    ? `Несоответствие количества комнат количеству гостей`
-    : ``;
-  form.capacity.setCustomValidity(validationMessage);
-  form.capacity.reportValidity();
+const onFormElementChange = (evt) => {
+  switch (evt.target) {
+    case form.type:
+      onTypeChange();
+      break;
+    case form.rooms:
+    case form.capacity:
+      onCapacityChange();
+      break;
+    case form.timein:
+    case form.timeout:
+      onTimeChange(evt);
+      break;
+  }
 };
 
-mainPin.addEventListener(`mousedown`, activatePageOnPress);
-mainPin.addEventListener(`keydown`, activatePageOnPress);
-form.rooms.addEventListener(`input`, onCapacityChange);
-form.capacity.addEventListener(`input`, onCapacityChange);
-formSubmit.addEventListener(`click`, onCapacityChange);
+mainPin.addEventListener(`mousedown`, onMainPinClick);
+mainPin.addEventListener(`keydown`, onMainPinClick);
