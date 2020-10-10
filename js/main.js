@@ -243,8 +243,8 @@ const setMainAddress = () => {
 // ###########
 
 const onTypeChange = () => {
-  form.price.min = `${MinPrices[form.type.value]}`;
-  form.price.placeholder = `${MinPrices[form.type.value]}`;
+  form.price.min = MinPrices[form.type.value];
+  form.price.placeholder = MinPrices[form.type.value];
 };
 
 const onCapacityChange = () => {
