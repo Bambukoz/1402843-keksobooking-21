@@ -27,7 +27,7 @@
 
   const activateForm = () => {
     form.classList.remove(`ad-form--disabled`);
-    window.form.disabledForm(false);
+    window.form.inactivateForm(false);
     form.addEventListener(`change`, window.form.onFormElementChange);
   };
 

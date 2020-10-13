@@ -16,13 +16,13 @@
     palace: 10000
   };
 
-  const disabledForm = (bool) => {
+  const inactivateForm = (formIsActive) => {
     formFieldset.forEach((element) => {
-      element.disabled = bool;
+      element.disabled = formIsActive;
     });
   };
 
-  disabledForm(true);
+  inactivateForm(true);
 
   const onTypeChange = () => {
     form.price.min = MinPrices[form.type.value];
@@ -62,7 +62,7 @@
   };
 
   window.form = {
-    disabledForm,
+    inactivateForm,
     onFormElementChange
   };
 })();

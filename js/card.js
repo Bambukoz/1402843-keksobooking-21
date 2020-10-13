@@ -22,8 +22,6 @@
   const cardTemplate = document.querySelector(`#card`).content.querySelector(`.popup`);
   const photoTemplate = document.querySelector(`#photo`).content;
 
-  const getWordsEndings = (number, words) => words[(number % 100 > 4 && number % 100 < 20) ? 2 : [2, 0, 1, 1, 1, 2][(number % 10 < 5) ? number % 10 : 5]];
-
   const getRenderFeature = (featureData) => {
     const newFeature = document.createElement(`li`);
     newFeature.className = `${FEATURE_CLASS} ${features[featureData]}`;
@@ -47,15 +45,15 @@
     cardElement.querySelector(`.popup__text--address`).textContent = cardData.offer.address;
     cardElement.querySelector(`.popup__text--price`).textContent = `${cardData.offer.price} ₽/ночь`;
     cardElement.querySelector(`.popup__type`).textContent = typesOfHousing[cardData.offer.type];
-    cardElement.querySelector(`.popup__text--capacity`).textContent = `${cardData.offer.rooms} ${getWordsEndings(cardData.offer.rooms, [`комната`, `комнаты`, `комнат`])} для ${cardData.offer.guests} ${getWordsEndings(cardData.offer.guests, [`гостя`, `гостей`])}`;
+    cardElement.querySelector(`.popup__text--capacity`).textContent = `${cardData.offer.rooms} ${window.util.getWordsEndings(cardData.offer.rooms, [`комната`, `комнаты`, `комнат`])} для ${cardData.offer.guests} ${window.util.getWordsEndings(cardData.offer.guests, [`гостя`, `гостей`])}`;
     cardElement.querySelector(`.popup__text--time`).textContent = `Заезд после ${cardData.offer.checkin}, выезд до ${cardData.offer.checkout}`;
 
-    for (let i = 0; i < cardData.offer.features.length; i++) {
-      featuresList.append(getRenderFeature(cardData.offer.features[i]));
+    for (let feature of cardData.offer.features) {
+      featuresList.append(getRenderFeature(feature));
     }
 
-    for (let i = 0; i < cardData.offer.photos.length; i++) {
-      photosList.append(getRenderPhoto(cardData.offer.photos[i]));
+    for (let photo of cardData.offer.photos) {
+      photosList.append(getRenderPhoto(photo));
     }
 
     cardElement.querySelector(`.popup__description`).textContent = cardData.offer.description;
