@@ -38,9 +38,13 @@
     MIN: 1000,
     MAX: 10000
   };
+  const MainPin = {
+    WIDTH: 65,
+    HEIGHT: 65
+  };
   const Coordinate = {
     X_MIN: 0,
-    X_MAX: 980,
+    X_MAX: window.main.map.offsetWidth - MainPin.WIDTH / 2,
     Y_MIN: 130,
     Y_MAX: 630,
   };
@@ -83,6 +87,7 @@
   };
 
   window.data = {
+    Coordinate,
     getCards
   };
 })();

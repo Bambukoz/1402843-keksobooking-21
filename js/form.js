@@ -9,7 +9,7 @@
     3: [`1`, `2`, `3`],
     100: [`0`]
   };
-  const MinPrices = {
+  const minPrices = {
     bungalow: 0,
     flat: 1000,
     house: 5000,
@@ -25,8 +25,8 @@
   inactivateForm(true);
 
   const onTypeChange = () => {
-    form.price.min = MinPrices[form.type.value];
-    form.price.placeholder = MinPrices[form.type.value];
+    form.price.min = minPrices[form.type.value];
+    form.price.placeholder = minPrices[form.type.value];
   };
 
   const onCapacityChange = () => {

@@ -2,7 +2,6 @@
 
 (function () {
   const KeyButtons = {
-    MOUSE_LEFT: 0,
     ENTER: `Enter`,
     ESCAPE: `Escape`
   };
