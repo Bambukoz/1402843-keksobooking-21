@@ -7,15 +7,17 @@
   const mainPin = map.querySelector(`.map__pin--main`);
   const form = document.querySelector(`.ad-form`);
 
-  const onMainPinClick = (evt) => {
-    if (evt.button === window.util.KeyButtons.MOUSE_LEFT || evt.key === window.util.KeyButtons.ENTER) {
-      map.classList.remove(`map--faded`);
-      window.pin.createPins(window.data.getCards(PINS_AMOUNT));
-      activateForm();
-      setMainAddress();
-      mainPin.removeEventListener(`mousedown`, onMainPinClick);
-      mainPin.removeEventListener(`keydown`, onMainPinClick);
-    }
+  const onMainPinClick = () => {
+    map.classList.remove(`map--faded`);
+    window.pin.createPins(window.data.getCards(PINS_AMOUNT));
+    activateForm();
+    mainPin.removeEventListener(`click`, onMainPinClick);
+  };
+
+  const activateForm = () => {
+    form.classList.remove(`ad-form--disabled`);
+    window.form.inactivateForm(false);
+    form.addEventListener(`change`, window.form.onFormElementChange);
   };
 
   const getMainAddressX = () => parseInt(mainPin.style.left, 10) + window.pin.Pin.WIDTH / 2;
@@ -25,12 +27,10 @@
     form.address.value = `${getMainAddressX()}, ${getMainAddressY()}`;
   };
 
-  const activateForm = () => {
-    form.classList.remove(`ad-form--disabled`);
-    window.form.disabledForm(false);
-    form.addEventListener(`change`, window.form.onFormElementChange);
-  };
+  mainPin.addEventListener(`click`, onMainPinClick);
 
-  mainPin.addEventListener(`mousedown`, onMainPinClick);
-  mainPin.addEventListener(`keydown`, onMainPinClick);
+  window.main = {
+    map,
+    setMainAddress
+  };
 })();
