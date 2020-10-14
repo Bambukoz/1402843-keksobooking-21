@@ -18,7 +18,6 @@
     house: `Дом`,
     bungalow: `Бунгало`
   };
-  const map = document.querySelector(`.map`);
   const cardTemplate = document.querySelector(`#card`).content.querySelector(`.popup`);
   const photoTemplate = document.querySelector(`#photo`).content;
 
@@ -61,11 +60,11 @@
   };
 
   const createCard = (card) => {
-    const popup = map.querySelector(`.popup`);
-    if (map.contains(popup)) {
+    const popup = window.main.map.querySelector(`.popup`);
+    if (window.main.map.contains(popup)) {
       popup.remove();
     }
-    map.append(getRenderCard(card));
+    window.main.map.append(getRenderCard(card));
   };
 
   window.card = {

@@ -43,7 +43,7 @@
     HEIGHT: 65
   };
   const Coordinate = {
-    X_MIN: 0,
+    X_MIN: 0 - MainPin.WIDTH / 2,
     X_MAX: window.main.map.offsetWidth - MainPin.WIDTH / 2,
     Y_MIN: 130,
     Y_MAX: 630,
