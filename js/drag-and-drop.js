@@ -1,6 +1,17 @@
 'use strict';
 
 (function () {
+  const MainPin = {
+    WIDTH: 65,
+    HEIGHT: 65
+  };
+  const Coordinate = {
+    X_MIN: 0 - MainPin.WIDTH / 2,
+    X_MAX: window.main.map.offsetWidth - MainPin.WIDTH / 2,
+    Y_MIN: 130,
+    Y_MAX: 630,
+  };
+
   window.main.mainPin.addEventListener(`mousedown`, function (evt) {
     evt.preventDefault();
 
@@ -27,11 +38,11 @@
         y: moveEvt.clientY
       };
 
-      if (CoordinateMainPin.x >= window.data.Coordinate.X_MIN && CoordinateMainPin.x <= window.data.Coordinate.X_MAX) {
+      if (CoordinateMainPin.x >= Coordinate.X_MIN && CoordinateMainPin.x <= Coordinate.X_MAX) {
         window.main.mainPin.style.left = `${CoordinateMainPin.x}px`;
       }
 
-      if (CoordinateMainPin.y >= window.data.Coordinate.Y_MIN && CoordinateMainPin.y <= window.data.Coordinate.Y_MAX) {
+      if (CoordinateMainPin.y >= Coordinate.Y_MIN && CoordinateMainPin.y <= Coordinate.Y_MAX) {
         window.main.mainPin.style.top = `${CoordinateMainPin.y}px`;
       }
 

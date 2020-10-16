@@ -2,13 +2,13 @@
 
 (function () {
 
-  const PINS_AMOUNT = 8;
+  // const PINS_AMOUNT = 8;
   const map = document.querySelector(`.map`);
   const mainPin = map.querySelector(`.map__pin--main`);
 
   const onMainPinClick = () => {
     map.classList.remove(`map--faded`);
-    window.pin.createPins(window.data.getCards(PINS_AMOUNT));
+    window.load.load(window.pin.createPins, window.error.onLoadError);
     activateForm();
     mainPin.removeEventListener(`click`, onMainPinClick);
   };

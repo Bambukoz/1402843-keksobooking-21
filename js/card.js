@@ -44,7 +44,7 @@
     cardElement.querySelector(`.popup__text--address`).textContent = cardData.offer.address;
     cardElement.querySelector(`.popup__text--price`).textContent = `${cardData.offer.price} ₽/ночь`;
     cardElement.querySelector(`.popup__type`).textContent = typesOfHousing[cardData.offer.type];
-    cardElement.querySelector(`.popup__text--capacity`).textContent = `${cardData.offer.rooms} ${window.util.getWordsEndings(cardData.offer.rooms, [`комната`, `комнаты`, `комнат`])} для ${cardData.offer.guests} ${window.util.getWordsEndings(cardData.offer.guests, [`гостя`, `гостей`])}`;
+    cardElement.querySelector(`.popup__text--capacity`).textContent = `${cardData.offer.rooms} ${window.util.getWordsEndings(cardData.offer.rooms, [`комната`, `комнаты`, `комнат`])} для ${cardData.offer.guests} ${window.util.getWordsEndings(cardData.offer.guests, [`гостя`, `гостей`, `гостей`])}`;
     cardElement.querySelector(`.popup__text--time`).textContent = `Заезд после ${cardData.offer.checkin}, выезд до ${cardData.offer.checkout}`;
 
     for (let feature of cardData.offer.features) {
