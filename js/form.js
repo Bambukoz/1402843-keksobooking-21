@@ -3,6 +3,7 @@
 (function () {
   const form = document.querySelector(`.ad-form`);
   const formFieldset = form.querySelectorAll(`fieldset`);
+
   const RoomsForGuests = {
     1: [`1`],
     2: [`1`, `2`],
@@ -61,8 +62,19 @@
     }
   };
 
+  const onSubmitForm = (evt) => {
+    evt.preventDefault();
+    window.backend.save(new FormData(form), window.statusMessage.onLoad, window.statusMessage.onError);
+  };
+
+  const onResetBtnClick = () => {
+    form.reset();
+  };
+
   window.form = {
+    onResetBtnClick,
     inactivateForm,
-    onFormElementChange
+    onFormElementChange,
+    onSubmitForm
   };
 })();

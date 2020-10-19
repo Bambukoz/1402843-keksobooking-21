@@ -11,8 +11,22 @@
   const onEscBtnClick = (evt) => {
     if (evt.key === KeyButtons.ESCAPE) {
       evt.preventDefault();
-      document.querySelector(`.popup`).remove();
+      if (document.querySelector(`.error`)) {
+        document.querySelector(`.error`).remove();
+      } if (document.querySelector(`.success`)) {
+        document.querySelector(`.success`).remove();
+      } if (document.querySelector(`.popup`)) {
+        document.querySelector(`.popup`).remove();
+      }
       document.removeEventListener(`keydown`, onEscBtnClick);
+    }
+  };
+
+  const onMouseClick = () => {
+    if (document.querySelector(`.success`)) {
+      document.querySelector(`.success`).remove();
+    } else {
+      document.querySelector(`.error`).remove();
     }
   };
 
@@ -25,6 +39,7 @@
     KeyButtons,
     getWordsEndings,
     onEscBtnClick,
+    onMouseClick,
     onCloseBtnClick
   };
 })();
