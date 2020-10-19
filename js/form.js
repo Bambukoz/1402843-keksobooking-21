@@ -62,7 +62,6 @@
   };
 
   window.form = {
-    form,
     inactivateForm,
     onFormElementChange
   };

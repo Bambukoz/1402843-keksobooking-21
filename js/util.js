@@ -11,7 +11,7 @@
   const onEscBtnClick = (evt) => {
     if (evt.key === KeyButtons.ESCAPE) {
       evt.preventDefault();
-      window.main.querySelector(`.popup`).remove();
+      document.querySelector(`.popup`).remove();
       document.removeEventListener(`keydown`, onEscBtnClick);
     }
   };

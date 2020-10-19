@@ -7,13 +7,12 @@
   const SUCCESS_CODE = 200;
 
   const onRequestLoad = (request, onLoad, onError) => {
-    const currentStatusCode = request.status;
-    switch (currentStatusCode) {
+    switch (request.status) {
       case SUCCESS_CODE:
         onLoad(request.response);
         break;
       default:
-        onError(`При загрузке данных с сервера произошла ошибка: ${request.status} - ${request.statusText}. Попробуйте перезагрузить страницу.`);
+        onError(`При загрузке данных с сервера произошла ошибка! Попробуйте перезагрузить страницу.`);
     }
   };
 

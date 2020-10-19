@@ -5,7 +5,8 @@
     WIDTH: 50,
     HEIGHT: 70
   };
-  const pinList = window.main.map.querySelector(`.map__pins`);
+  const map = document.querySelector(`.map`);
+  const pinList = map.querySelector(`.map__pins`);
   const pinTemplate = document.querySelector(`#pin`).content.querySelector(`.map__pin`);
 
   const getRenderPin = (pin) => {

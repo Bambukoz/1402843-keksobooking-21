@@ -4,6 +4,7 @@
 
   // const PINS_AMOUNT = 8;
   const map = document.querySelector(`.map`);
+  const form = document.querySelector(`.ad-form`);
   const mainPin = map.querySelector(`.map__pin--main`);
 
   const onMainPinClick = () => {
@@ -14,23 +15,21 @@
   };
 
   const activateForm = () => {
-    window.form.form.classList.remove(`ad-form--disabled`);
+    form.classList.remove(`ad-form--disabled`);
     window.form.inactivateForm(false);
-    window.form.form.addEventListener(`change`, window.form.onFormElementChange);
+    form.addEventListener(`change`, window.form.onFormElementChange);
   };
 
   const getMainAddressX = () => parseInt(mainPin.style.left, 10) + window.pin.Pin.WIDTH / 2;
   const getMainAddressY = () => parseInt(mainPin.style.top, 10) + window.pin.Pin.HEIGHT;
 
   const setMainAddress = () => {
-    window.form.form.address.value = `${getMainAddressX()}, ${getMainAddressY()}`;
+    form.address.value = `${getMainAddressX()}, ${getMainAddressY()}`;
   };
 
   mainPin.addEventListener(`click`, onMainPinClick);
 
   window.main = {
-    map,
-    mainPin,
     setMainAddress
   };
 })();
