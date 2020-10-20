@@ -1,18 +1,19 @@
 'use strict';
-
 (function () {
-  const MainPin = {
+  const map = document.querySelector(`.map`);
+  const mainPin = map.querySelector(`.map__pin--main`);
+  const PinSize = {
     WIDTH: 65,
     HEIGHT: 65
   };
   const Coordinate = {
-    X_MIN: 0 - MainPin.WIDTH / 2,
-    X_MAX: window.main.map.offsetWidth - MainPin.WIDTH / 2,
+    X_MIN: 0 - PinSize.WIDTH / 2,
+    X_MAX: map.offsetWidth - PinSize.WIDTH / 2,
     Y_MIN: 130,
     Y_MAX: 630,
   };
 
-  window.main.mainPin.addEventListener(`mousedown`, function (evt) {
+  mainPin.addEventListener(`mousedown`, function (evt) {
     evt.preventDefault();
 
     let startCoords = {
@@ -29,8 +30,8 @@
       };
 
       const CoordinateMainPin = {
-        x: window.main.mainPin.offsetLeft - shift.x,
-        y: window.main.mainPin.offsetTop - shift.y
+        x: mainPin.offsetLeft - shift.x,
+        y: mainPin.offsetTop - shift.y
       };
 
       startCoords = {
@@ -39,11 +40,11 @@
       };
 
       if (CoordinateMainPin.x >= Coordinate.X_MIN && CoordinateMainPin.x <= Coordinate.X_MAX) {
-        window.main.mainPin.style.left = `${CoordinateMainPin.x}px`;
+        mainPin.style.left = `${CoordinateMainPin.x}px`;
       }
 
       if (CoordinateMainPin.y >= Coordinate.Y_MIN && CoordinateMainPin.y <= Coordinate.Y_MAX) {
-        window.main.mainPin.style.top = `${CoordinateMainPin.y}px`;
+        mainPin.style.top = `${CoordinateMainPin.y}px`;
       }
 
       window.main.setMainAddress();

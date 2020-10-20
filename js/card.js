@@ -2,7 +2,7 @@
 
 (function () {
   const FEATURE_CLASS = `popup__feature`;
-
+  const map = document.querySelector(`.map`);
   const features = {
     wifi: FEATURE_CLASS + `--wifi`,
     dishwasher: FEATURE_CLASS + `--dishwasher`,
@@ -60,11 +60,11 @@
   };
 
   const createCard = (card) => {
-    const popup = window.main.map.querySelector(`.popup`);
-    if (window.main.map.contains(popup)) {
+    const popup = map.querySelector(`.popup`);
+    if (map.contains(popup)) {
       popup.remove();
     }
-    window.main.map.append(getRenderCard(card));
+    map.append(getRenderCard(card));
   };
 
   window.card = {
