@@ -1,7 +1,6 @@
 'use strict';
 
 (function () {
-
   const getRandomNumber = (number) => Math.floor(Math.random() * number);
   const getRandomElement = (arr) => arr[Math.floor(Math.random() * arr.length)];
   const getRandomRange = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;

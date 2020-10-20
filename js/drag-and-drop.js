@@ -15,6 +15,7 @@
 
   mainPin.addEventListener(`mousedown`, function (evt) {
     evt.preventDefault();
+    window.main.setMainAddress();
 
     let startCoords = {
       x: evt.clientX,
@@ -49,6 +50,7 @@
 
       window.main.setMainAddress();
     };
+
     const onMouseUp = (upEvt) => {
       upEvt.preventDefault();
       document.removeEventListener(`mousemove`, onMouseMove);
