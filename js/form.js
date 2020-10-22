@@ -64,7 +64,7 @@
   };
 
   const inactivateForm = (formIsDisabled) => {
-    formFieldset.forEach((element) => {
+    Array.from(formFieldset).forEach((element) => {
       element.disabled = formIsDisabled;
     });
     if (!formIsDisabled) {

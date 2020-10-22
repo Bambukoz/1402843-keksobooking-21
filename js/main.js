@@ -9,13 +9,18 @@
     LEFT: `570px`
   };
 
+  const successLoadHandler = (pins) => {
+    window.pinsArray = pins;
+    window.filter.inactivateFilter(false);
+    window.filter.onHousingTypeChange();
+  };
+
   const onMainPinClick = () => {
     map.classList.remove(`map--faded`);
-    window.backend.load(window.filter.successLoadHandler, window.statusMessage.onError, true);
+    window.backend.load(successLoadHandler, window.statusMessage.onError, true);
     activateForm();
     mainPin.removeEventListener(`click`, onMainPinClick);
   };
-
 
   const activateForm = () => {
     form.classList.remove(`ad-form--disabled`);

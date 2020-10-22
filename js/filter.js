@@ -7,30 +7,18 @@ const PinsIndex = {
 const mapFiltersForm = document.querySelector(`.map__filters`);
 const housingType = document.querySelector(`#housing-type`);
 
-const successLoadHandler = (pins) => {
-  window.pinsArray = pins;
-  inactivateFilter(false);
-  onHousingTypeChange();
-};
-
-const fliterPins = (pin) => {
-  return pin.offer.type === housingType.value;
-};
-
-const shuffleArray = (array) => array.sort(() => Math.random() - 0.5);
+const filterPins = (pin) => pin.offer.type === housingType.value;
 
 const onHousingTypeChange = () => {
-  let newPinsArray = shuffleArray(window.pinsArray);
   window.card.removeCard();
-  if (housingType.value !== `any`) {
-    newPinsArray = window.pinsArray.filter(fliterPins);
-  }
-  window.pin.createPins(newPinsArray.slice(PinsIndex.MIN, PinsIndex.MAX));
+  const newPins = housingType.value !== `any` ?
+    window.pinsArray.filter(filterPins) :
+    window.util.shuffleArray(window.pinsArray);
+  window.pin.createPins(newPins.slice(PinsIndex.MIN, PinsIndex.MAX));
 };
 
 const inactivateFilter = (filterIsDisabled) => {
-  const filterElements = mapFiltersForm.childNodes;
-  filterElements.forEach((element) => {
+  Array.from(mapFiltersForm.children).forEach((element) => {
     element.disabled = filterIsDisabled;
   });
   if (!filterIsDisabled) {
@@ -43,7 +31,7 @@ const inactivateFilter = (filterIsDisabled) => {
 inactivateFilter(true);
 
 window.filter = {
+  onHousingTypeChange,
   inactivateFilter,
-  successLoadHandler,
 };
 
