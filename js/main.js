@@ -11,38 +11,38 @@
 
   const onMainPinClick = () => {
     map.classList.remove(`map--faded`);
-    window.backend.load(window.pin.createPins, window.statusMessage.onError, true);
+    window.backend.load(window.filter.successLoadHandler, window.statusMessage.onError, true);
     activateForm();
     mainPin.removeEventListener(`click`, onMainPinClick);
   };
 
+
   const activateForm = () => {
     form.classList.remove(`ad-form--disabled`);
     window.form.inactivateForm(false);
-    form.addEventListener(`change`, window.form.onFormElementChange);
-    form.addEventListener(`submit`, window.form.onSubmitForm);
-    form.addEventListener(`reset`, window.form.onResetBtnClick);
   };
 
-  const resetPage = () => {
+  const resetMap = () => {
     const pins = map.querySelectorAll(`.map__pin:not(.map__pin--main)`);
-    map.classList.add(`map--faded`);
-    form.classList.add(`ad-form--disabled`);
     for (let pin of pins) {
       pin.remove();
     }
+  };
+
+  const resetPage = () => {
+    resetMap();
+    map.classList.add(`map--faded`);
+    form.classList.add(`ad-form--disabled`);
     mainPin.style.left = PinDefaultPosition.LEFT;
     mainPin.style.top = PinDefaultPosition.TOP;
     window.form.inactivateForm(true);
+    window.filter.inactivateFilter(true);
     form.reset();
     mainPin.addEventListener(`click`, onMainPinClick);
   };
 
   const onClosePopup = () => {
     resetPage();
-    form.removeEventListener(`change`, window.form.onFormElementChange);
-    form.removeEventListener(`submit`, window.form.onSubmitForm);
-    form.removeEventListener(`reset`, window.form.onResetBtnClick);
   };
 
   const getMainAddressX = () => parseInt(mainPin.style.left, 10) + window.pin.Pin.WIDTH / 2;
@@ -55,6 +55,7 @@
   mainPin.addEventListener(`click`, onMainPinClick);
 
   window.main = {
+    resetMap,
     setMainAddress,
     onClosePopup
   };

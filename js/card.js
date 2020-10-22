@@ -59,17 +59,21 @@
     return cardElement;
   };
 
-  const createCard = (card) => {
+  const removeCard = () => {
     const popup = map.querySelector(`.popup`);
     if (map.contains(popup)) {
       popup.remove();
     }
+  };
+  const createCard = (card) => {
+    removeCard();
     map.append(getRenderCard(card));
   };
 
   window.card = {
     features,
     typesOfHousing,
+    removeCard,
     createCard
   };
 })();
