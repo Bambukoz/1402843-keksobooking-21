@@ -10,7 +10,7 @@
   };
 
   const successLoadHandler = (pins) => {
-    window.pinsArray = pins;
+    window.pinsList = pins;
     window.filter.inactivateFilter(false);
     window.filter.onHousingTypeChange();
   };
