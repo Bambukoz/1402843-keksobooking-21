@@ -27,6 +27,7 @@
         window.card.createCard(pin);
       });
     }
+    window.main.resetMap();
     pinList.append(fragment);
   };
 

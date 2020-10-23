@@ -1,4 +1,5 @@
 'use strict';
+
 (function () {
   const map = document.querySelector(`.map`);
   const mainPin = map.querySelector(`.map__pin--main`);
@@ -15,6 +16,7 @@
 
   mainPin.addEventListener(`mousedown`, function (evt) {
     evt.preventDefault();
+    window.main.setMainAddress();
 
     let startCoords = {
       x: evt.clientX,
@@ -49,6 +51,7 @@
 
       window.main.setMainAddress();
     };
+
     const onMouseUp = (upEvt) => {
       upEvt.preventDefault();
       document.removeEventListener(`mousemove`, onMouseMove);

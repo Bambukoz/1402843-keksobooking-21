@@ -17,14 +17,6 @@
     palace: 10000
   };
 
-  const inactivateForm = (formIsActive) => {
-    formFieldset.forEach((element) => {
-      element.disabled = formIsActive;
-    });
-  };
-
-  inactivateForm(true);
-
   const onTypeChange = () => {
     form.price.min = minPrices[form.type.value];
     form.price.placeholder = minPrices[form.type.value];
@@ -70,6 +62,23 @@
   const onResetBtnClick = () => {
     form.reset();
   };
+
+  const inactivateForm = (formIsDisabled) => {
+    Array.from(formFieldset).forEach((element) => {
+      element.disabled = formIsDisabled;
+    });
+    if (!formIsDisabled) {
+      form.addEventListener(`change`, onFormElementChange);
+      form.addEventListener(`submit`, onSubmitForm);
+      form.addEventListener(`reset`, onResetBtnClick);
+    } else {
+      form.removeEventListener(`change`, onFormElementChange);
+      form.removeEventListener(`submit`, onSubmitForm);
+      form.removeEventListener(`reset`, onResetBtnClick);
+    }
+  };
+
+  inactivateForm(true);
 
   window.form = {
     onResetBtnClick,
