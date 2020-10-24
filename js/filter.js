@@ -5,7 +5,7 @@
     MIN: 0,
     MAX: 5
   };
-  const price = {
+  const priceMap = {
     low: {
       name: `low`,
       value: 10000
@@ -25,41 +25,37 @@
   const housingGuests = mapFiltersForm.querySelector(`#housing-guests`);
   const housingFeatures = mapFiltersForm.querySelector(`.map__features`);
 
-  const filterOnType = (pin) => housingType.value === `any` || pin.offer.type === housingType.value;
-  const filterOnPrice = (pin) => {
-    if (housingPrice.value === price.low.name) {
-      return pin.offer.price < price.low.value;
-    } else if (housingPrice.value === price.middle.name) {
-      return pin.offer.price >= price.low.value && pin.offer.price <= price.high.value;
-    } else if (housingPrice.value === price.high.name) {
-      return pin.offer.price > price.high.value;
-    } else {
-      return true;
+  const filterOnType = (type) => housingType.value === `any` || type === housingType.value;
+  const filterOnPrice = (price) => {
+    switch (housingPrice.value) {
+      case priceMap.low.name:
+        return price < priceMap.low.value;
+      case priceMap.middle.name:
+        return price >= priceMap.low.value && price <= priceMap.high.value;
+      case priceMap.high.name:
+        return price > priceMap.high.value;
     }
+    return true;
   };
-  const filterOnRooms = (pin) => housingRooms.value === `any` || pin.offer.rooms.toString() === housingRooms.value;
-  const filterOnGuests = (pin) => housingGuests.value === `any` || pin.offer.guests.toString() === housingGuests.value;
-  const filterOnFeatures = (pin) => {
-    const checkedElements = housingFeatures.querySelectorAll(`input[type=checkbox]:checked`);
-    const features = [].map.call(checkedElements, (input) => input.value);
-
-    return features.every((currentFeature) => pin.offer.features.includes(currentFeature));
+  const filterOnRooms = (rooms) => housingRooms.value === `any` || rooms.toString() === housingRooms.value;
+  const filterOnGuests = (guests) => housingGuests.value === `any` || guests.toString() === housingGuests.value;
+  const filterOnFeatures = (features) => {
+    return Array.from(housingFeatures.querySelectorAll(`input[type=checkbox]:checked`))
+    .map((input) => input.value)
+    .every((currentFeature) => features.includes(currentFeature));
   };
 
-  const onFilterElementChange = (pin) => {
-    const pinsType = filterOnType(pin);
-    const pinsPrice = filterOnPrice(pin);
-    const pinsRooms = filterOnRooms(pin);
-    const pinsGuests = filterOnGuests(pin);
-    const pinsFeatures = filterOnFeatures(pin);
-    return pinsType && pinsPrice && pinsRooms && pinsGuests && pinsFeatures;
+  const onFilterElementChange = (pin) => filterOnType(pin.offer.type) && filterOnPrice(pin.offer.price) &&
+    filterOnRooms(pin.offer.rooms) && filterOnGuests(pin.offer.guests) && filterOnFeatures(pin.offer.features);
+
+  const filteredPins = () => {
+    window.card.removeCard();
+    const newPins = window.pinsList.filter(onFilterElementChange);
+    window.pin.createPins(newPins.slice(PinsIndex.MIN, PinsIndex.MAX));
   };
 
   const showFilteredPins = () => {
-    window.card.removeCard();
-    const newPins = window.pinsList.filter(onFilterElementChange);
-    const createPins = window.pin.createPins(newPins.slice(PinsIndex.MIN, PinsIndex.MAX));
-    window.debounce.setDebounce(createPins);
+    window.debounce.setDebounce(filteredPins);
   };
 
   const inactivateFilter = (filterIsDisabled) => {
@@ -77,6 +73,6 @@
 
   window.filter = {
     showFilteredPins,
-    inactivateFilter,
+    inactivateFilter
   };
 })();
