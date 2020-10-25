@@ -45,16 +45,16 @@
     .every((currentFeature) => features.includes(currentFeature));
   };
 
-  const onFilterElementChange = (pin) => filterOnType(pin.offer.type) && filterOnPrice(pin.offer.price) &&
+  const getFilteredPins = (pin) => filterOnType(pin.offer.type) && filterOnPrice(pin.offer.price) &&
     filterOnRooms(pin.offer.rooms) && filterOnGuests(pin.offer.guests) && filterOnFeatures(pin.offer.features);
 
   const filteredPins = () => {
     window.card.removeCard();
-    const newPins = window.pinsList.filter(onFilterElementChange);
+    const newPins = window.pinsList.filter(getFilteredPins);
     window.pin.createPins(newPins.slice(PinsIndex.MIN, PinsIndex.MAX));
   };
 
-  const showFilteredPins = () => {
+  const onFilterElementChange = () => {
     window.debounce.setDebounce(filteredPins);
   };
 
@@ -63,16 +63,16 @@
       element.disabled = filterIsDisabled;
     });
     if (!filterIsDisabled) {
-      mapFiltersForm.addEventListener(`change`, showFilteredPins);
+      mapFiltersForm.addEventListener(`change`, onFilterElementChange);
     } else {
-      mapFiltersForm.removeEventListener(`change`, showFilteredPins);
+      mapFiltersForm.removeEventListener(`change`, onFilterElementChange);
     }
   };
 
   inactivateFilter(true);
 
   window.filter = {
-    showFilteredPins,
+    filteredPins,
     inactivateFilter
   };
 })();

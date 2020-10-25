@@ -12,7 +12,7 @@
   const successLoadHandler = (pins) => {
     window.pinsList = pins;
     window.filter.inactivateFilter(false);
-    window.filter.showFilteredPins();
+    window.filter.filteredPins();
   };
 
   const onMainPinClick = () => {
