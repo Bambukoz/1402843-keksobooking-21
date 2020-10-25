@@ -5,15 +5,57 @@
     MIN: 0,
     MAX: 5
   };
+  const priceMap = {
+    low: {
+      name: `low`,
+      value: 10000
+    },
+    middle: {
+      name: `middle`
+    },
+    high: {
+      name: `high`,
+      value: 50000
+    }
+  };
   const mapFiltersForm = document.querySelector(`.map__filters`);
-  const housingType = document.querySelector(`#housing-type`);
+  const housingType = mapFiltersForm.querySelector(`#housing-type`);
+  const housingPrice = mapFiltersForm.querySelector(`#housing-price`);
+  const housingRooms = mapFiltersForm.querySelector(`#housing-rooms`);
+  const housingGuests = mapFiltersForm.querySelector(`#housing-guests`);
+  const housingFeatures = mapFiltersForm.querySelector(`.map__features`);
 
-  const filterPins = (pin) => pin.offer.type === housingType.value;
+  const filterOnType = (type) => housingType.value === `any` || type === housingType.value;
+  const filterOnPrice = (price) => {
+    switch (housingPrice.value) {
+      case priceMap.low.name:
+        return price < priceMap.low.value;
+      case priceMap.middle.name:
+        return price >= priceMap.low.value && price <= priceMap.high.value;
+      case priceMap.high.name:
+        return price > priceMap.high.value;
+    }
+    return true;
+  };
+  const filterOnRooms = (rooms) => housingRooms.value === `any` || rooms.toString() === housingRooms.value;
+  const filterOnGuests = (guests) => housingGuests.value === `any` || guests.toString() === housingGuests.value;
+  const filterOnFeatures = (features) => {
+    return Array.from(housingFeatures.querySelectorAll(`input[type=checkbox]:checked`))
+    .map((input) => input.value)
+    .every((currentFeature) => features.includes(currentFeature));
+  };
 
-  const onHousingTypeChange = () => {
+  const onFilterElementChange = (pin) => filterOnType(pin.offer.type) && filterOnPrice(pin.offer.price) &&
+    filterOnRooms(pin.offer.rooms) && filterOnGuests(pin.offer.guests) && filterOnFeatures(pin.offer.features);
+
+  const filteredPins = () => {
     window.card.removeCard();
-    const newPins = housingType.value !== `any` ? window.pinsList.filter(filterPins) : window.pinsList;
+    const newPins = window.pinsList.filter(onFilterElementChange);
     window.pin.createPins(newPins.slice(PinsIndex.MIN, PinsIndex.MAX));
+  };
+
+  const showFilteredPins = () => {
+    window.debounce.setDebounce(filteredPins);
   };
 
   const inactivateFilter = (filterIsDisabled) => {
@@ -21,16 +63,16 @@
       element.disabled = filterIsDisabled;
     });
     if (!filterIsDisabled) {
-      mapFiltersForm.addEventListener(`change`, onHousingTypeChange);
+      mapFiltersForm.addEventListener(`change`, showFilteredPins);
     } else {
-      mapFiltersForm.removeEventListener(`change`, onHousingTypeChange);
+      mapFiltersForm.removeEventListener(`change`, showFilteredPins);
     }
   };
 
   inactivateFilter(true);
 
   window.filter = {
-    onHousingTypeChange,
-    inactivateFilter,
+    showFilteredPins,
+    inactivateFilter
   };
 })();
