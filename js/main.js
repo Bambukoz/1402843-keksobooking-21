@@ -35,6 +35,7 @@ const resetMap = () => {
 
 const resetPage = () => {
   resetMap();
+  window.card.removeCard();
   map.classList.add(`map--faded`);
   form.classList.add(`ad-form--disabled`);
   mainPin.style.left = PinDefaultPosition.LEFT;

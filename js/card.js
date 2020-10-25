@@ -64,6 +64,7 @@ const removeCard = () => {
     popup.remove();
   }
 };
+
 const createCard = (card) => {
   removeCard();
   map.append(getRenderCard(card));
