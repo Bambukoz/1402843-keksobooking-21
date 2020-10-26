@@ -1,6 +1,7 @@
 'use strict';
 
 const form = document.querySelector(`.ad-form`);
+const formPhoto = form.querySelector(`.ad-form__photo`);
 const formFieldset = form.querySelectorAll(`fieldset`);
 const RoomsForGuests = {
   1: [`1`],
@@ -62,6 +63,7 @@ const onSubmitForm = (evt) => {
 };
 
 const onResetBtnClick = () => {
+  formPhoto.textContent = ``;
   form.reset();
 };
 
