@@ -43,12 +43,12 @@ const onAvatarLoad = (evt) => {
 
 const loadImage = (evt, file) => {
   const reader = new FileReader();
-  reader.readAsDataURL(file);
   if (evt.target === form.avatar) {
     reader.addEventListener(`load`, onAvatarLoad);
   } else {
     reader.addEventListener(`load`, onImageLoad);
   }
+  reader.readAsDataURL(file);
 };
 
 const setImage = (evt) => {
