@@ -18,5 +18,11 @@ module.exports = {
     path: path.resolve(__dirname),
     iife: true
   },
+  devServer: {
+    port: 8080,
+    open: true,
+    liveReload: true,
+    contentBase: path.resolve(__dirname)
+  },
   devtool: false
 };
