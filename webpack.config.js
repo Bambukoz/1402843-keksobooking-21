@@ -6,6 +6,7 @@ module.exports = {
     `./js/backend.js`,
     `./js/debounce.js`,
     `./js/filter.js`,
+    `./js/photos.js`,
     `./js/form.js`,
     `./js/main.js`,
     `./js/card.js`,
@@ -22,7 +23,7 @@ module.exports = {
     port: 8080,
     open: true,
     liveReload: true,
-    contentBase: path.resolve(__dirname)
+    contentBase: path.resolve(__dirname),
   },
   devtool: false
 };

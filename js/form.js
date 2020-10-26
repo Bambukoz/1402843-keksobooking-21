@@ -2,7 +2,6 @@
 
 const form = document.querySelector(`.ad-form`);
 const formFieldset = form.querySelectorAll(`fieldset`);
-
 const RoomsForGuests = {
   1: [`1`],
   2: [`1`, `2`],
@@ -49,6 +48,10 @@ const onFormElementChange = (evt) => {
     case form.timein:
     case form.timeout:
       onTimeChange(evt);
+      break;
+    case form.avatar:
+    case form.images:
+      window.photos.setImage(evt);
       break;
   }
 };
