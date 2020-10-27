@@ -2,6 +2,7 @@
 
 const map = document.querySelector(`.map`);
 const form = document.querySelector(`.ad-form`);
+const formPhoto = form.querySelector(`.ad-form__photo`);
 const mainPin = map.querySelector(`.map__pin--main`);
 const PinDefaultPosition = {
   TOP: `375px`,
@@ -42,6 +43,7 @@ const resetPage = () => {
   mainPin.style.top = PinDefaultPosition.TOP;
   window.form.inactivateForm(true);
   window.filter.inactivateFilter(true);
+  formPhoto.textContent = ``;
   form.reset();
   mainPin.addEventListener(`click`, onMainPinClick);
 };

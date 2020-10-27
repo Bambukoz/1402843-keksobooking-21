@@ -6,6 +6,7 @@ module.exports = {
     `./js/backend.js`,
     `./js/debounce.js`,
     `./js/filter.js`,
+    `./js/photos.js`,
     `./js/form.js`,
     `./js/main.js`,
     `./js/card.js`,
@@ -17,6 +18,12 @@ module.exports = {
     filename: `bundle.js`,
     path: path.resolve(__dirname),
     iife: true
+  },
+  devServer: {
+    port: 8080,
+    open: true,
+    liveReload: true,
+    contentBase: path.resolve(__dirname),
   },
   devtool: false
 };
