@@ -53,11 +53,8 @@ const loadImage = (evt, file) => {
 
 const setImage = (evt) => {
   const file = evt.target.files[0];
-  switch (file.type) {
-    case FileTypes.PNG:
-    case FileTypes.JPG:
-    case FileTypes.JPEG:
-      loadImage(evt, file);
+  if ([FileTypes.PNG, FileTypes.JPG, FileTypes.JPEG].includes(file.type)) {
+    loadImage(evt, file);
   }
 };
 
