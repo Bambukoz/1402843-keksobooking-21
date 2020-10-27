@@ -2,7 +2,6 @@
 
 const map = document.querySelector(`.map`);
 const form = document.querySelector(`.ad-form`);
-const formPhoto = form.querySelector(`.ad-form__photo`);
 const mainPin = map.querySelector(`.map__pin--main`);
 const PinDefaultPosition = {
   TOP: `375px`,
@@ -32,20 +31,19 @@ const resetMap = () => {
   for (let pin of pins) {
     pin.remove();
   }
+  window.card.removeCard();
+  mainPin.style.left = PinDefaultPosition.LEFT;
+  mainPin.style.top = PinDefaultPosition.TOP;
+  mainPin.addEventListener(`click`, onMainPinClick);
 };
 
 const resetPage = () => {
   resetMap();
-  window.card.removeCard();
+  window.form.resetForm();
   map.classList.add(`map--faded`);
   form.classList.add(`ad-form--disabled`);
-  mainPin.style.left = PinDefaultPosition.LEFT;
-  mainPin.style.top = PinDefaultPosition.TOP;
   window.form.inactivateForm(true);
   window.filter.inactivateFilter(true);
-  formPhoto.textContent = ``;
-  form.reset();
-  mainPin.addEventListener(`click`, onMainPinClick);
 };
 
 const onClosePopup = () => {

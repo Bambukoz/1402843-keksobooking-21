@@ -62,9 +62,15 @@ const onSubmitForm = (evt) => {
   window.backend.save(new FormData(form), window.statusMessage.onLoad, window.statusMessage.onError);
 };
 
-const onResetBtnClick = () => {
+const resetForm = () => {
   formPhoto.textContent = ``;
+  form.price.min = minPrices.flat;
+  form.price.placeholder = minPrices.flat;
   form.reset();
+};
+
+const onResetBtnClick = () => {
+  resetForm();
 };
 
 const inactivateForm = (formIsDisabled) => {
@@ -85,7 +91,7 @@ const inactivateForm = (formIsDisabled) => {
 inactivateForm(true);
 
 window.form = {
-  onResetBtnClick,
+  resetForm,
   inactivateForm,
   onFormElementChange,
   onSubmitForm

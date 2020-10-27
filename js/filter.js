@@ -1,5 +1,6 @@
 'use strict';
 
+const DEFAULT_VALUE = `any`;
 const PinsIndex = {
   MIN: 0,
   MAX: 5
@@ -24,7 +25,7 @@ const housingRooms = mapFiltersForm.querySelector(`#housing-rooms`);
 const housingGuests = mapFiltersForm.querySelector(`#housing-guests`);
 const housingFeatures = mapFiltersForm.querySelector(`.map__features`);
 
-const filterOnType = (type) => housingType.value === `any` || type === housingType.value;
+const filterOnType = (type) => housingType.value === DEFAULT_VALUE || type === housingType.value;
 const filterOnPrice = (price) => {
   switch (housingPrice.value) {
     case priceMap.low.name:
@@ -36,8 +37,8 @@ const filterOnPrice = (price) => {
   }
   return true;
 };
-const filterOnRooms = (rooms) => housingRooms.value === `any` || rooms.toString() === housingRooms.value;
-const filterOnGuests = (guests) => housingGuests.value === `any` || guests.toString() === housingGuests.value;
+const filterOnRooms = (rooms) => housingRooms.value === DEFAULT_VALUE || rooms.toString() === housingRooms.value;
+const filterOnGuests = (guests) => housingGuests.value === DEFAULT_VALUE || guests.toString() === housingGuests.value;
 const filterOnFeatures = (features) => {
   return Array.from(housingFeatures.querySelectorAll(`input[type=checkbox]:checked`))
     .map((input) => input.value)
@@ -65,6 +66,7 @@ const inactivateFilter = (filterIsDisabled) => {
     mapFiltersForm.addEventListener(`change`, onFilterElementChange);
   } else {
     mapFiltersForm.removeEventListener(`change`, onFilterElementChange);
+    mapFiltersForm.reset();
   }
 };
 
