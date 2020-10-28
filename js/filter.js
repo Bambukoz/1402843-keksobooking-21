@@ -35,7 +35,7 @@ const filterOnPrice = (price) => {
     case priceMap.high.name:
       return price > priceMap.high.value;
   }
-  return true;
+  return price;
 };
 const filterOnRooms = (rooms) => housingRooms.value === DEFAULT_VALUE || rooms.toString() === housingRooms.value;
 const filterOnGuests = (guests) => housingGuests.value === DEFAULT_VALUE || guests.toString() === housingGuests.value;
