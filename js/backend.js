@@ -9,7 +9,7 @@ const MethodType = {
   POST: `POST`
 };
 const TIMEOUT = 10000;
-const Code = {
+const StatusCode = {
   SUCCESS: 200,
   NOT_FOUND: 404,
   BAD_REQUEST: 400,
@@ -18,18 +18,18 @@ const Code = {
 
 const onRequestLoad = (request, onLoad, onError) => {
   switch (request.status) {
-    case Code.SUCCESS:
+    case StatusCode.SUCCESS:
       if (request.responseURL === Url.GET) {
         onLoad(request.response);
       } else {
         onLoad();
       }
       break;
-    case Code.NOT_FOUND:
+    case StatusCode.NOT_FOUND:
       onError(`При загрузке данных с сервера произошла ошибка!`);
       break;
-    case Code.SERVER_ERROR:
-    case Code.BAD_REQUEST:
+    case StatusCode.SERVER_ERROR:
+    case StatusCode.BAD_REQUEST:
       onError();
       break;
   }

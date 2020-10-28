@@ -31,9 +31,9 @@ const onCapacityChange = () => {
 
 const onTimeChange = (evt) => {
   if (evt.target === form.timein) {
-    form.timeout.value = evt.target.value;
+    form.timeout.value = form.timein.value;
   } else {
-    form.timein.value = evt.target.value;
+    form.timein.value = form.timeout.value;
   }
 };
 
@@ -62,9 +62,15 @@ const onSubmitForm = (evt) => {
   window.backend.save(new FormData(form), window.statusMessage.onLoad, window.statusMessage.onError);
 };
 
-const onResetBtnClick = () => {
+const resetForm = () => {
   formPhoto.textContent = ``;
+  form.price.min = minPrices.flat;
+  form.price.placeholder = minPrices.flat;
   form.reset();
+};
+
+const onResetBtnClick = () => {
+  resetForm();
 };
 
 const inactivateForm = (formIsDisabled) => {
@@ -85,8 +91,6 @@ const inactivateForm = (formIsDisabled) => {
 inactivateForm(true);
 
 window.form = {
-  onResetBtnClick,
+  resetForm,
   inactivateForm,
-  onFormElementChange,
-  onSubmitForm
 };

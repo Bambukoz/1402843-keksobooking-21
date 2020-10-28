@@ -26,7 +26,7 @@ const onLoad = () => {
   successPopup.addEventListener(`click`, window.util.onMouseClick);
   document.addEventListener(`keydown`, window.util.onEscBtnClick);
   document.querySelector(`main`).prepend(successPopup);
-  window.main.onClosePopup();
+  window.main.resetPage();
 };
 
 window.statusMessage = {

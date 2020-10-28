@@ -3,12 +3,12 @@
 const form = document.querySelector(`.ad-form`);
 const userAvatar = form.querySelector(`.ad-form-header__preview img`);
 const formPhoto = form.querySelector(`.ad-form__photo`);
-const FileTypes = {
+const FileType = {
   PNG: `image/png`,
   JPG: `image/jpg`,
   JPEG: `image/jpeg`
 };
-const PhotoStyles = {
+const PhotoStyle = {
   WIDTH: `70px`,
   HEIGHT: `70px`,
   BORDER_RADIUS: `5px`,
@@ -17,12 +17,12 @@ const PhotoStyles = {
 };
 
 const addStyles = (element, addMargin = false) => {
-  element.style.width = PhotoStyles.WIDTH;
-  element.style.height = PhotoStyles.HEIGHT;
-  element.style.borderRadius = PhotoStyles.BORDER_RADIUS;
-  element.style.objectFit = PhotoStyles.OBJECT_FIT;
+  element.style.width = PhotoStyle.WIDTH;
+  element.style.height = PhotoStyle.HEIGHT;
+  element.style.borderRadius = PhotoStyle.BORDER_RADIUS;
+  element.style.objectFit = PhotoStyle.OBJECT_FIT;
   if (addMargin) {
-    element.style.marginLeft = PhotoStyles.MARGIN_LEFT;
+    element.style.marginLeft = PhotoStyle.MARGIN_LEFT;
   }
 };
 
@@ -53,7 +53,7 @@ const loadImage = (evt, file) => {
 
 const setImage = (evt) => {
   const file = evt.target.files[0];
-  if ([FileTypes.PNG, FileTypes.JPG, FileTypes.JPEG].includes(file.type)) {
+  if ([FileType.PNG, FileType.JPG, FileType.JPEG].includes(file.type)) {
     loadImage(evt, file);
   }
 };
