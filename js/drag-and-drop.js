@@ -13,7 +13,7 @@ const Coordinate = {
   Y_MAX: 630,
 };
 
-mainPin.addEventListener(`mousedown`, function (evt) {
+const onMouseDown = (evt) => {
   evt.preventDefault();
   window.main.setMainAddress();
 
@@ -59,4 +59,6 @@ mainPin.addEventListener(`mousedown`, function (evt) {
 
   document.addEventListener(`mousemove`, onMouseMove);
   document.addEventListener(`mouseup`, onMouseUp);
-});
+};
+
+mainPin.addEventListener(`mousedown`, onMouseDown);

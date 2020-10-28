@@ -2,7 +2,7 @@
 
 const FEATURE_CLASS = `popup__feature`;
 const map = document.querySelector(`.map`);
-const features = {
+const feature = {
   wifi: FEATURE_CLASS + `--wifi`,
   dishwasher: FEATURE_CLASS + `--dishwasher`,
   parking: FEATURE_CLASS + `--parking`,
@@ -22,7 +22,7 @@ const photoTemplate = document.querySelector(`#photo`).content;
 
 const getRenderFeature = (featureData) => {
   const newFeature = document.createElement(`li`);
-  newFeature.className = `${FEATURE_CLASS} ${features[featureData]}`;
+  newFeature.className = `${FEATURE_CLASS} ${feature[featureData]}`;
   return newFeature;
 };
 
@@ -46,8 +46,8 @@ const getRenderCard = (cardData) => {
   cardElement.querySelector(`.popup__text--capacity`).textContent = `${cardData.offer.rooms} ${window.util.getWordsEndings(cardData.offer.rooms, [`комната`, `комнаты`, `комнат`])} для ${cardData.offer.guests} ${window.util.getWordsEndings(cardData.offer.guests, [`гостя`, `гостей`, `гостей`])}`;
   cardElement.querySelector(`.popup__text--time`).textContent = `Заезд после ${cardData.offer.checkin}, выезд до ${cardData.offer.checkout}`;
 
-  for (let feature of cardData.offer.features) {
-    featuresList.append(getRenderFeature(feature));
+  for (let featureElement of cardData.offer.features) {
+    featuresList.append(getRenderFeature(featureElement));
   }
 
   for (let photo of cardData.offer.photos) {
@@ -71,8 +71,6 @@ const createCard = (card) => {
 };
 
 window.card = {
-  features,
-  typesOfHousing,
   removeCard,
   createCard
 };

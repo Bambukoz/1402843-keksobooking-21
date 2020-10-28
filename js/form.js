@@ -93,6 +93,4 @@ inactivateForm(true);
 window.form = {
   resetForm,
   inactivateForm,
-  onFormElementChange,
-  onSubmitForm
 };

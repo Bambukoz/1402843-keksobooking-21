@@ -18,12 +18,12 @@ const onMainPinClick = () => {
   map.classList.remove(`map--faded`);
   window.backend.load(successLoadHandler, window.statusMessage.onError, true);
   activateForm();
-  mainPin.removeEventListener(`click`, onMainPinClick);
 };
 
 const activateForm = () => {
   form.classList.remove(`ad-form--disabled`);
   window.form.inactivateForm(false);
+  mainPin.removeEventListener(`click`, onMainPinClick);
 };
 
 const resetMap = () => {
@@ -32,9 +32,6 @@ const resetMap = () => {
     pin.remove();
   }
   window.card.removeCard();
-  mainPin.style.left = PinDefaultPosition.LEFT;
-  mainPin.style.top = PinDefaultPosition.TOP;
-  mainPin.addEventListener(`click`, onMainPinClick);
 };
 
 const resetPage = () => {
@@ -42,12 +39,11 @@ const resetPage = () => {
   window.form.resetForm();
   map.classList.add(`map--faded`);
   form.classList.add(`ad-form--disabled`);
+  mainPin.style.left = PinDefaultPosition.LEFT;
+  mainPin.style.top = PinDefaultPosition.TOP;
   window.form.inactivateForm(true);
   window.filter.inactivateFilter(true);
-};
-
-const onClosePopup = () => {
-  resetPage();
+  mainPin.addEventListener(`click`, onMainPinClick);
 };
 
 const getMainAddressX = () => parseInt(mainPin.style.left, 10) + window.pin.Pin.WIDTH / 2;
@@ -60,7 +56,7 @@ const setMainAddress = () => {
 mainPin.addEventListener(`click`, onMainPinClick);
 
 window.main = {
-  resetMap,
   setMainAddress,
-  onClosePopup
+  resetMap,
+  resetPage
 };

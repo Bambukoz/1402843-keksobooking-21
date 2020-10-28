@@ -33,15 +33,16 @@ const onMouseClick = () => {
   } else {
     document.querySelector(`.error`).remove();
   }
+  document.removeEventListener(`keydown`, onEscBtnClick);
 };
 
 const onCloseBtnClick = (evt) => {
   evt.target.parentElement.remove();
   evt.target.removeEventListener(`click`, onCloseBtnClick);
+  document.removeEventListener(`keydown`, onEscBtnClick);
 };
 
 window.util = {
-  KeyButtons,
   getWordsEndings,
   onEscBtnClick,
   onMouseClick,
