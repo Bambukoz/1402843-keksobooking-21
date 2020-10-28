@@ -30,12 +30,12 @@ const onCapacityChange = () => {
 };
 
 const onTimeChange = (evt) => {
-  const target = evt.target;
-  target = (evt.target === form.timein) ?
-    form.timeout.value = form.timein.value :
+  if (evt.target === form.timein) {
+    form.timeout.value = form.timein.value;
+  } else {
     form.timein.value = form.timeout.value;
+  }
 };
-
 
 const onFormElementChange = (evt) => {
   switch (evt.target) {
