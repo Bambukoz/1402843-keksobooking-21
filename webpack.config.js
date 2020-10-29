@@ -8,10 +8,10 @@ module.exports = {
     `./js/filter.js`,
     `./js/photos.js`,
     `./js/form.js`,
-    `./js/pin.js`,
-    `./js/drag-and-drop.js`,
     `./js/main.js`,
     `./js/card.js`,
+    `./js/pin.js`,
+    `./js/drag-and-drop.js`,
     `./js/util.js`
   ],
   output: {

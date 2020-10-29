@@ -3,8 +3,8 @@
 const map = document.querySelector(`.map`);
 const mainPin = map.querySelector(`.map__pin--main`);
 const PinSize = {
-  WIDTH: 62,
-  HEIGHT: 84
+  WIDTH: 65,
+  HEIGHT: 65
 };
 const Coordinate = {
   X_MIN: 0 - PinSize.WIDTH / 2,
@@ -15,36 +15,37 @@ const Coordinate = {
 
 const onMouseDown = (evt) => {
   evt.preventDefault();
+  window.main.setMainAddress();
 
-  let StartCoords = {
-    X: evt.clientX,
-    Y: evt.clientY
+  let startCoords = {
+    x: evt.clientX,
+    y: evt.clientY
   };
 
   const onMouseMove = (moveEvt) => {
     moveEvt.preventDefault();
 
-    const Shift = {
-      X: StartCoords.X - moveEvt.clientX,
-      Y: StartCoords.Y - moveEvt.clientY
+    const shift = {
+      x: startCoords.x - moveEvt.clientX,
+      y: startCoords.y - moveEvt.clientY
     };
 
     const CoordinateMainPin = {
-      X: mainPin.offsetLeft - Shift.X,
-      Y: mainPin.offsetTop - Shift.Y
+      x: mainPin.offsetLeft - shift.x,
+      y: mainPin.offsetTop - shift.y
     };
 
-    StartCoords = {
-      X: moveEvt.clientX,
-      Y: moveEvt.clientY
+    startCoords = {
+      x: moveEvt.clientX,
+      y: moveEvt.clientY
     };
 
-    if (CoordinateMainPin.X >= Coordinate.X_MIN && CoordinateMainPin.X <= Coordinate.X_MAX) {
-      mainPin.style.left = `${CoordinateMainPin.X}px`;
+    if (CoordinateMainPin.x >= Coordinate.X_MIN && CoordinateMainPin.x <= Coordinate.X_MAX) {
+      mainPin.style.left = `${CoordinateMainPin.x}px`;
     }
 
-    if (CoordinateMainPin.Y >= Coordinate.Y_MIN && CoordinateMainPin.Y <= Coordinate.Y_MAX) {
-      mainPin.style.top = `${CoordinateMainPin.Y}px`;
+    if (CoordinateMainPin.y >= Coordinate.Y_MIN && CoordinateMainPin.y <= Coordinate.Y_MAX) {
+      mainPin.style.top = `${CoordinateMainPin.y}px`;
     }
 
     window.main.setMainAddress();
@@ -61,7 +62,3 @@ const onMouseDown = (evt) => {
 };
 
 mainPin.addEventListener(`mousedown`, onMouseDown);
-
-window.dragAndDrop = {
-  PinSize
-};

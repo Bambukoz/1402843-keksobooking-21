@@ -1,13 +1,17 @@
 'use strict';
 
+const Pin = {
+  WIDTH: 50,
+  HEIGHT: 70
+};
 const map = document.querySelector(`.map`);
 const pinList = map.querySelector(`.map__pins`);
 const pinTemplate = document.querySelector(`#pin`).content.querySelector(`.map__pin`);
 
 const getRenderPin = (pin) => {
   const pinElement = pinTemplate.cloneNode(true);
-  pinElement.style.left = `${pin.location.x}px`;
-  pinElement.style.top = `${pin.location.y}px`;
+  pinElement.style.left = `${pin.location.x + Pin.WIDTH / 2}px`;
+  pinElement.style.top = `${pin.location.y + Pin.HEIGHT}px`;
   pinElement.querySelector(`img`).src = pin.author.avatar;
   pinElement.querySelector(`img`).alt = pin.offer.title;
   return pinElement;
@@ -27,5 +31,6 @@ const createPins = (pins) => {
 };
 
 window.pin = {
+  Pin,
   createPins
 };
