@@ -1,7 +1,9 @@
 'use strict';
 
 const form = document.querySelector(`.ad-form`);
+const formAvatar = form.querySelector(`.ad-form-header__preview img`);
 const formPhoto = form.querySelector(`.ad-form__photo`);
+const formResetBtn = form.querySelector(`.ad-form__reset`);
 const formFieldset = form.querySelectorAll(`fieldset`);
 const RoomsForGuests = {
   1: [`1`],
@@ -14,6 +16,11 @@ const minPrices = {
   flat: 1000,
   house: 5000,
   palace: 10000
+};
+const DefaultAvatar = {
+  SRC: `img/muffin-grey.svg`,
+  WIDTH: 40,
+  HEIGHT: 44
 };
 
 const onTypeChange = () => {
@@ -63,15 +70,22 @@ const onSubmitForm = (evt) => {
 };
 
 const resetForm = () => {
+  formAvatar.style = ``;
+  formAvatar.src = DefaultAvatar.SRC;
+  formAvatar.width = DefaultAvatar.WIDTH;
+  formAvatar.height = DefaultAvatar.HEIGHT;
   formPhoto.textContent = ``;
   form.price.min = minPrices.flat;
   form.price.placeholder = minPrices.flat;
   form.reset();
 };
 
-const onResetBtnClick = () => {
-  resetForm();
+const onResetBtnClick = (evt) => {
+  if (evt.target === formResetBtn) {
+    window.main.resetPage();
+  }
 };
+
 
 const inactivateForm = (formIsDisabled) => {
   Array.from(formFieldset).forEach((element) => {
@@ -80,11 +94,11 @@ const inactivateForm = (formIsDisabled) => {
   if (!formIsDisabled) {
     form.addEventListener(`change`, onFormElementChange);
     form.addEventListener(`submit`, onSubmitForm);
-    form.addEventListener(`reset`, onResetBtnClick);
+    form.addEventListener(`click`, onResetBtnClick);
   } else {
     form.removeEventListener(`change`, onFormElementChange);
     form.removeEventListener(`submit`, onSubmitForm);
-    form.removeEventListener(`reset`, onResetBtnClick);
+    form.removeEventListener(`click`, onResetBtnClick);
   }
 };
 

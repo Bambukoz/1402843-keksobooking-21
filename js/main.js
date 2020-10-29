@@ -34,25 +34,27 @@ const resetMap = () => {
   window.card.removeCard();
 };
 
-const resetPage = () => {
-  resetMap();
-  window.form.resetForm();
-  map.classList.add(`map--faded`);
-  form.classList.add(`ad-form--disabled`);
-  mainPin.style.left = PinDefaultPosition.LEFT;
-  mainPin.style.top = PinDefaultPosition.TOP;
-  window.form.inactivateForm(true);
-  window.filter.inactivateFilter(true);
-  mainPin.addEventListener(`click`, onMainPinClick);
-};
-
-const getMainAddressX = () => parseInt(mainPin.style.left, 10) + window.pin.Pin.WIDTH / 2;
-const getMainAddressY = () => parseInt(mainPin.style.top, 10) + window.pin.Pin.HEIGHT;
+const getMainAddressX = () => parseInt(mainPin.style.left, 10) + window.dragAndDrop.PinSize.WIDTH / 2;
+const getMainAddressY = () => parseInt(mainPin.style.top, 10) + window.dragAndDrop.PinSize.HEIGHT;
 
 const setMainAddress = () => {
   form.address.value = `${getMainAddressX()}, ${getMainAddressY()}`;
 };
 
+const resetPage = () => {
+  resetMap();
+  window.form.resetForm();
+  window.form.inactivateForm(true);
+  window.filter.inactivateFilter(true);
+  map.classList.add(`map--faded`);
+  form.classList.add(`ad-form--disabled`);
+  mainPin.style.left = PinDefaultPosition.LEFT;
+  mainPin.style.top = PinDefaultPosition.TOP;
+  mainPin.addEventListener(`click`, onMainPinClick);
+  setMainAddress();
+};
+
+setMainAddress();
 mainPin.addEventListener(`click`, onMainPinClick);
 
 window.main = {
